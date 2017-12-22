@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mllib_model_gen.iml" filepath="$PROJECT_DIR$/.idea/modules/mllib_model_gen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mllib_model_gen-build.iml" filepath="$PROJECT_DIR$/.idea/modules/mllib_model_gen-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mlibgenfinal.iml" filepath="$PROJECT_DIR$/.idea/modules/mlibgenfinal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mlibgenfinal-build.iml" filepath="$PROJECT_DIR$/.idea/modules/mlibgenfinal-build.iml" />
     </modules>
   </component>
 </project>
