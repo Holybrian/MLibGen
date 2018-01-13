@@ -4,7 +4,7 @@
 		module="mllib_model_gen_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20171222120809"
+		publication="20180111153038"
 	>
 		<description>
 		Mllib_Model_Gen

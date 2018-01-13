@@ -4,7 +4,7 @@
 		module="mllib_model_gen$sbt_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20171222120816"
+		publication="20180113163646"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

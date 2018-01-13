@@ -4,7 +4,7 @@
 		module="mlibgenfinal-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20171222102439"
+		publication="20180111153024"
 		e:sbtVersion="0.13" e:scalaVersion="2.10"
 	>
 		<description>

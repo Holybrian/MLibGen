@@ -15,12 +15,18 @@ import org.apache.spark.{SparkConf, SparkContext}
 object SparkNaiveBayesModelCreator {
   def main(args: Array[String]) {
     val sc = createSparkContext()
+    //hier moeten 3 argumenten meegegeven worden
+    val filename = args(0)
+    val stopwords = args(1)
+    val accuracy = args(2)
+    val outputfile = args(3)
+
 
     LogUtils.setLogLevels(sc)
 
-    val stopWordsList = sc.broadcast(StopwordsLoader.loadStopWords(PropertiesLoader.nltkStopWords))
-    createAndSaveNBModel(sc, stopWordsList)
-    validateAccuracyOfNBModel(sc, stopWordsList)
+    val stopWordsList = sc.broadcast(StopwordsLoader.loadStopWords(stopwords))
+    createAndSaveNBModel(filename,outputfile,sc, stopWordsList)
+    validateAccuracyOfNBModel(sc, stopWordsList, accuracy, filename,outputfile)
   }
 
   /**
@@ -53,8 +59,9 @@ object SparkNaiveBayesModelCreator {
     * @param sc            -- Spark Context.
     * @param stopWordsList -- Broadcast variable for list of stop words to be removed from the tweets.
     */
-  def createAndSaveNBModel(sc: SparkContext, stopWordsList: Broadcast[List[String]]): Unit = {
-    val tweetsDF: DataFrame = loadSentiment140File(sc, PropertiesLoader.sentiment140TrainingFilePath)
+  def createAndSaveNBModel(filename: String,outpufile: String,sc: SparkContext, stopWordsList: Broadcast[List[String]]): Unit = {
+    val tweetsDF: DataFrame = loadSentiment140File(sc, filename)
+
 
     val labeledRDD = tweetsDF.select("polarity", "status").rdd.map {
       case Row(polarity: Int, tweet: String) =>
@@ -64,7 +71,7 @@ object SparkNaiveBayesModelCreator {
     labeledRDD.cache()
 
     val naiveBayesModel: NaiveBayesModel = NaiveBayes.train(labeledRDD, lambda = 1.0, modelType = "multinomial")
-    naiveBayesModel.save(sc, PropertiesLoader.naiveBayesModelPath)
+    naiveBayesModel.save(sc, outpufile)
   }
 
   /**
@@ -73,10 +80,10 @@ object SparkNaiveBayesModelCreator {
     * @param sc            -- Spark Context.
     * @param stopWordsList -- Broadcast variable for list of stop words to be removed from the tweets.
     */
-  def validateAccuracyOfNBModel(sc: SparkContext, stopWordsList: Broadcast[List[String]]): Unit = {
-    val naiveBayesModel: NaiveBayesModel = NaiveBayesModel.load(sc, PropertiesLoader.naiveBayesModelPath)
+  def validateAccuracyOfNBModel(sc: SparkContext, stopWordsList: Broadcast[List[String]], testAccuracy: String, filename: String, outputfile: String): Unit = {
+    val naiveBayesModel: NaiveBayesModel = NaiveBayesModel.load(sc, outputfile)
 
-    val tweetsDF: DataFrame = loadSentiment140File(sc, PropertiesLoader.sentiment140TestingFilePath)
+    val tweetsDF: DataFrame = loadSentiment140File(sc, filename)
     val actualVsPredictionRDD = tweetsDF.select("polarity", "status").rdd.map {
       case Row(polarity: Int, tweet: String) =>
         val tweetText = replaceNewLines(tweet)
@@ -91,7 +98,7 @@ object SparkNaiveBayesModelCreator {
     val predictedInCorrect = actualVsPredictionRDD.filter(x => x._1 != x._2).count()
     val accuracy = 100.0 * predictedCorrect.toDouble / (predictedCorrect + predictedInCorrect).toDouble*/
     println(f"""\n\t<==******** Prediction accuracy compared to actual: $accuracy%.2f%% ********==>\n""")
-    saveAccuracy(sc, actualVsPredictionRDD)
+    saveAccuracy(sc, actualVsPredictionRDD,testAccuracy)
   }
 
   /**
@@ -121,7 +128,7 @@ object SparkNaiveBayesModelCreator {
     * @param sc                    -- Spark Context.
     * @param actualVsPredictionRDD -- RDD of polarity of a tweet in dataset and MLlib computed polarity.
     */
-  def saveAccuracy(sc: SparkContext, actualVsPredictionRDD: RDD[(Double, Double, String)]): Unit = {
+  def saveAccuracy(sc: SparkContext, actualVsPredictionRDD: RDD[(Double, Double, String)],testAccuracy: String): Unit = {
     val sqlContext = SQLContextSingleton.getInstance(sc)
     import sqlContext.implicits._
     val actualVsPredictionDF = actualVsPredictionRDD.toDF("Actual", "Predicted", "Text")
@@ -132,7 +139,7 @@ object SparkNaiveBayesModelCreator {
       // Compression codec to compress while saving to file.
       .option("codec", classOf[GzipCodec].getCanonicalName)
       .mode(SaveMode.Append)
-      .save(PropertiesLoader.modelAccuracyPath)
+      .save(testAccuracy)
   }
 
 }

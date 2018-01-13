@@ -1778,9 +1778,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.16!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar
-[debug] :: resolution report :: resolve 1047ms :: artifacts dl 119ms
+[debug] :: resolution report :: resolve 2421ms :: artifacts dl 182ms
 [debug] 	report for mllib_model_gen#mllib_model_gen$sbt_2.10;1.0 default produced in C:\Users\brian\Documents\MLibGenFinal\target\scala-2.11\resolution-cache\reports\mllib_model_gen-mllib_model_gen$sbt_2.10-default.xml
-[debug] 	resolve done (1047ms resolve - 119ms download)
+[debug] 	resolve done (2421ms resolve - 182ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: mllib_model_gen#mllib_model_gen$sources_2.10;1.0
 [debug] 	confs: [default]
@@ -2458,6 +2458,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#tracking;0.13.16!tracking.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.16!test-agent.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#command;0.13.16!command.jar(src)
-[debug] :: resolution report :: resolve 364ms :: artifacts dl 117ms
+[debug] :: resolution report :: resolve 930ms :: artifacts dl 121ms
 [debug] 	report for mllib_model_gen#mllib_model_gen$sources_2.10;1.0 default produced in C:\Users\brian\Documents\MLibGenFinal\target\scala-2.11\resolution-cache\reports\mllib_model_gen-mllib_model_gen$sources_2.10-default.xml
-[debug] 	resolve done (364ms resolve - 117ms download)
+[debug] 	resolve done (930ms resolve - 121ms download)
