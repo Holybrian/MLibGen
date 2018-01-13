@@ -15,10 +15,14 @@ import org.apache.spark.{SparkConf, SparkContext}
 object SparkNaiveBayesModelCreator {
   def main(args: Array[String]) {
     val sc = createSparkContext()
-    //hier moeten 3 argumenten meegegeven worden
+    //hier moeten 4 argumenten meegegeven worden
+//file name training data staat in input file op s3
     val filename = args(0)
+    //filename stopwordlist staat in inputfile op s3
     val stopwords = args(1)
+    //save location accuracy = optioneel kan eenvoudig werken zonder dit door gewoon de validate accuracy functie te verwijderen
     val accuracy = args(2)
+    //outpul file voor het model. Juiste locatie meegeven in aws waar je het wilt opgeslagen hebbe
     val outputfile = args(3)
 
 
